@@ -1,0 +1,101 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+<style>
+    .form{
+        width: 80%;
+        margin-left: 10%;
+        color: #858796;
+    }
+    .form-switch{
+        width: 90%;
+        margin-left: 5%;
+        color: #858796;
+    }
+    .color-admin-grey{
+        color: #858796;
+    }
+    .height-img-video-admin{
+        height: 100%;
+    }
+    .small-text{
+        font-size: 0.6em;
+    }
+</style>
+{% set namePath = app.request.attributes.get('_route') %}
+{% set currentPath = app.request.uri %}
+    <div id="wrapper">
+        {% include 'header-admin.html.twig' %}
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            
+            <!-- Main Content -->
+            <div id="content">
+
+                {% include '_nav-admin.html.twig' %}
+                  {# ADDFLASH ZONE DE TEXTE #}
+                {% for message in app.flashes('success_net') %}
+                    <div class="bg-success text-white text-center col-md-6 mx-auto rounded p-3 mb-3">
+                        {{ message }} 
+                    </div> 
+                {% endfor %}
+
+                {% if namePath == 'network' %}
+
+                    <h5 class="text-center color-admin-grey mt-5 mb-3" id="infos">Modification {{ reseau.reseauSocial }}</h5>
+
+                    <form class="d-none d-sm-inline-block mw-100 form-group form" method="post">
+                        
+                        <label for="nom" class="rounded form-label p-0 mt-2">Nom </label>
+                        <input type="text" class="form-control mb-2 col-12 border" placeholder="" name="nom" value="{{ reseau.reseauSocial }}">
+                        
+                        <label for="icon" class="rounded form-label p-0 mt-2">Logo</label>
+                        {# <input type="text" class="form-control mb-2 col-12 border" placeholder="" name="icon" value="{{ reseau.icon }}"> #}
+                        <select class="custom-select" name="icon">
+                            <option value="<i class='bi bi-instagram'></i>" {{ reseau.icon == "<i class='bi bi-instagram'></i>" ? "selected" : ""}}>Instagram</option>
+                            <option value="<i class='fab fa-facebook-f fa-fw'></i>"  {{ reseau.icon == "<i class='fab fa-facebook-f fa-fw'></i>" ? "selected" : ""}}>Facebook</option>
+                            <option value="<i class='bi bi-youtube'></i>"  {{ reseau.icon == "<i class='bi bi-youtube'></i>" ? "selected" : ""}}>Youtube</option>
+                        </select>
+                    
+                        <label for="lien" class="rounded form-label p-0 mt-2">Lien</label>
+                        <input type="text" class="form-control mb-2 col-12 border" placeholder="" name="lien" value="{{ reseau.lien }}">
+                    
+                        <button class="btn btn-primary mt-2" type="submit">
+                            Valider
+                        </button>
+                    </form>
+
+                {% endif %}
+                {% if namePath == 'networks' %}
+                    <h5 class="text-center color-admin-grey mt-5 mb-3" id="infos">Les réseaux sociaux</h5>
+                    <table class="table table-bordered table-resposive form">
+                        <thead>
+                            <th class="col-3">Reseaux sociaux</th>
+                            <th class="col-8">Lien</th>
+                            <th class="col-1">Modifier</th>
+                        </thead>
+                        <tbody>
+                        {% for data in reseaux %}
+                            <tr class="">
+                                <td class="col-3">{{ data.icon | raw}}  {{ data.reseauSocial | capitalize}}</td>
+                                <td class="col-8">
+                                    <a href="{{ data.lien }}" class="color-admin-grey col-12 text-center"> {{ data.lien }}</a> 
+                                </td>
+                                <td class="col-1">
+                                    <a href="{{ path('network', { id: data.id }) }}" class="color-admin-grey col-12 text-center"><i class="bi bi-pencil-square"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
+            </div>
+            {% include 'footer-admin.html.twig' %}
+        </div>
+    </div>
+    
+
+{% endblock %}

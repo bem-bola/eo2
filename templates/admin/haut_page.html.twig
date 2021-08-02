@@ -1,0 +1,230 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+<style>
+    .form{
+        width: 80%;
+        margin-left: 10%;
+        color: #858796;
+    }
+    .form-switch{
+        width: 90%;
+        margin-left: 5%;
+        color: #858796;
+    }
+    .color-admin-grey{
+        color: #858796;
+    }
+    .height-img-video-admin{
+        height: 100%;
+    }
+    .small-text{
+        font-size: 0.6em;
+    }
+</style>
+{% set currentPath = app.request.requesturi %}
+{% set namePath = app.request.attributes.get('_route') %}
+
+<main id='haut-page'>
+    <div id="wrapper">
+        {% include 'header-admin.html.twig' %}
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            
+            <!-- Main Content -->
+            <div id="content" class="content">
+
+                {% include '_nav-admin.html.twig' %}
+
+                {# ADDFLASH MENU #}
+                {% for message in app.flashes('success_menu') %}
+                    <div class="bg-success text-white text-center col-md-6 mx-auto rounded p-3 my-5">
+                        {{ message }} 
+                    </div> 
+                {% endfor %}
+
+                {# ADDFLASH BG #}
+                {% for message in app.flashes('success_bg') %}
+                    <div class="bg-success text-white text-center col-md-6 mx-auto rounded p-3 my-5">
+                        {{ message }} 
+                    </div> 
+                {% endfor %}
+
+                {# LES INFOS GENERALE #}
+                {% if namePath == 'haut' %}
+
+                    <h5 class="text-center color-admin-grey mt-5 mb-3" id="infos">Informations générales du site </h5>
+
+                    {{ form_start(formInfo, {'attr': {'class': 'form form-group mt-5'}}) }}
+
+                        {{ form_label(formInfo.nom_du_site, 'Nom du site:') }}
+                        {{ form_widget(formInfo.nom_du_site, {'attr': {'class': 'form-control mb-3', 'placeholder': 'Exemple: EO Site'}}) }}
+
+                        {{ form_label(formInfo.sous_titre_site, 'Sous titre:') }}
+                        {{ form_widget(formInfo.sous_titre_site, {'attr': {'class': 'form-control mb-3'}}) }}
+
+                        {{ form_label(formInfo.description_1, 'Description 1:') }}
+                        {{ form_widget(formInfo.description_1, {'attr': {'class': 'form-control mb-3'}}) }}
+
+                        {{ form_label(formInfo.description_2, 'Description 2:') }}
+                        {{ form_widget(formInfo.description_2, {'attr': {'class': 'form-control mb-3'}}) }}
+
+                        {{ form_label(formInfo.description_3, 'Description 3:') }}
+                        {{ form_widget(formInfo.description_3, {'attr': {'class': 'form-control mb-3'}}) }}
+
+                        {{ form_label(formInfo.description_4, 'Description 4:') }}
+                        {{ form_widget(formInfo.description_4, {'attr': {'class': 'form-control'}}) }}
+
+
+                        {{ form_row(formInfo.save, {'attr': {'class': 'btn btn-primary btn-submit mt-3'}}) }}
+
+                    {{ form_end(formInfo) }}
+                {% endif %}
+
+                {# ARRIERE PLAN IMAGE #}
+                {% if namePath == 'bg' %}
+                    <h5 class="text-center color-admin-grey mt-5 mb-3" id="infos">Arrière plan</h5>
+                    <div class="flex form mt-5">
+                
+                        {{ form_start(forms, {'attr': {'class': 'form-group col-8'}}) }}
+
+                            <!-- Button trigger modal -->
+                            <label for="form-label">Parcourir le media: </label>
+
+                            <div class="input-group input-group-sm col-8 p-0">
+                                <span class="input-group-text close-admin-img" id="inputGroup-sizing-sm" type="button"><i class="bi bi-x-lg"></i></span>
+                                <input type="text" name="image-media" class="form-control form-control-sm image-media" value="" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                <span type="button" class="input-group-text" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen">
+                                    <i class="bi bi-collection-fill"></i>
+                                </span>
+                            </div>
+
+                            {{ form_label(forms.background, 'Parcourir cet ordinateur:', {'label_attr': {'class': 'form-label p-0 mt-2'}}) }}
+                            {{ form_widget(forms.background, {'attr': {'class': 'form-control form-control-sm col-8 photo-admin-upload', 'value': '' }}) }}
+
+                            {{ form_row(forms.save, {'attr': {'class': 'btn btn-primary btn-submit mt-3'}}) }}
+
+                        {{ form_end(forms) }}
+
+                        <div>
+                            <div class="dNone img-add">
+                                <p class="card-text mt-3">Image choisie: </p>
+                                <div class="card" style="width: 18rem;">
+                                    <img src=""  alt="image choisie" class="card-img-top">
+                                </div>
+                            </div>
+                            <p class="card-text">Image actuelle: </p>
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{ asset('images/uploads/' ~ bg.background) }}"  alt="{{bg.background}}" class="card-img-top">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="exampleModalFullscreen" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-fullscreen">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title h4" id="exampleModalFullscreenLabel">Media</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="album py-5 bg-light">
+                                        <div class="container">
+                                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                                                {% for data in images %}
+                                                    <div class="col img-mini" data-bs-dismiss="modal">
+                                                        <div class="card shadow-sm">
+                                                            <img  src="{{ asset('images/slider/' ~ data.lien) }}" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+
+                                                            <div class="card-body">
+                                                                <p class="card-text">{{ data.lien | length > 25 ? data.lien | slice(0,25) ~ "..." : data.lien  }}</p>
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="btn-group">
+                                                                        <a href="{{ path('media_delete', {id: data.id})}}" type="button" class="btn"><i class="bi bi-trash" onClick="return confirm('Etes-vous certains de vouloir supprimer cette image ?')"></i></a>
+                                                                        <input type="hidden" name="nom-img" class="nom-img" value="{{ data.lien}}" disabled>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{{ path('media')}}" class="btn btn-info text-white">Ajouter une nouvelle image</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+                {# MENU DE NAVIGATION #}
+                {% if namePath == 'menu' %}
+                    <h5 class="text-center color-admin-grey mt-5 mb-3" id="admin-menu">Menu de navigation</h5>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form-group mb-0">
+                                <form class="form" method="POST">
+                                    {% for data in menu %}
+                                        <div class="flex"> 
+                                            <input type="text" class="form-control my-3 col-6" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ data.titre }}" name="{{data.id}}">
+
+                                            {# input active #}
+                                            <div class="form-check form-switch flex my-3 mr-1 col-3">
+
+                                                <select class="form-select check-admin form-control p-check col-12" aria-label="Default select example" name="{{ data.id * 10 }}">
+                                                    <option value="on" {{ data.active == 'on' ? 'selected' : '' }}>Active</option>
+                                                    <option value="off" {{ data.active == 'off' ? 'selected' : '' }} {{ data.id == 1 ? "disabled" : ""}}>Off</option>
+                                                </select>
+                                                {# <input class="form-check-input check-admin form-control p-check col-12" type="checkbox" id="flexSwitchCheckChecked" {{ data.id == 1 ? "disabled checked" : ""}} {{ data.active == 'on' ? 'checked' : 'off' }}  value="{{ data.active }}"> #}
+                                            </div>
+                                            <div class="col-4 p-danger {{ data.active == 'on' ? 'dNone' : '' }}">
+                                                <p class="my-3 text-danger small-text col-12">
+                                                    La zone "
+                                                    <span class="font-weight-bold">{{ data.titre }}</span>"
+                                                    est actuellement caché aux utilisateurs de votre site .
+                                                </p>
+                                            </div>
+                                            <div class="col-4 p-warning dNone">
+                                                <p class="my-3 text-warning small-text col-12">
+                                                    L'emplacement "
+                                                    <span class="font-weight-bold">{{ data.titre }}</span>"
+                                                    sera caché aux utilisateurs de votre site .
+                                                </p>
+                                            </div>
+                                            <div class="col-4 p-success {{ data.active == 'off' ? 'dNone' : '' }}">
+                                                <p class="my-3 text-success small-text col-12">
+                                                    L'emplacement "
+                                                    <span class="font-weight-bold">{{ data.titre }}</span>"
+                                                    est actuellement visible aux utilisateurs de votre site.
+                                                </p>
+                                            </div>
+                                            <div class="col-4 p-success-1 dNone">
+                                                <p class="my-3 text-success small-text col-12">
+                                                    L'emplacement "
+                                                    <span class="font-weight-bold">{{ data.titre }}</span>"
+                                                    sera visible aux utilisateurs de votre site.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <button type="submit" class="btn btn-primary ">Mettre à jour</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {# {{ dump(menu)}} #}
+                {% endif %}
+
+            </div>
+            {% include 'footer-admin.html.twig' %}
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+<style>
+</style>
+{% set currentPath = app.request.requesturi %}
+{% set namePath = app.request.attributes.get('_route') %}
+
+<main id='zone_3_admin'>
+    <div id="wrapper">
+        {% include 'header-admin.html.twig' %}
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            
+            <!-- Main Content -->
+            <div id="content" class="content">
+
+                {% include '_nav-admin.html.twig' %}
+                <h1 class="display-4 text-center my-5">Page non trouvée</h1>
+
+            </div>
+            {% include 'footer-admin.html.twig' %}
+        </div>
+    </div>
+</main>
+
+{% endblock %}

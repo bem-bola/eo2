@@ -1,0 +1,106 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+<style>
+    .form{
+        width: 80%;
+        margin-left: 10%;
+        color: #858796;
+    }
+    .form-switch{
+        width: 90%;
+        margin-left: 5%;
+        color: #858796;
+    }
+    .color-admin-grey{
+        color: #858796;
+    }
+    .height-img-video-admin{
+        height: 100%;
+    }
+    .small-text{
+        font-size: 0.6em;
+    }
+</style>
+{% set currentPath = app.request.requesturi %}
+{% set namePath = app.request.attributes.get('_route') %}
+    <div id="wrapper">
+        {% include 'header-admin.html.twig' %}
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            
+            <!-- Main Content -->
+            <div id="content">
+                {% include '_nav-admin.html.twig' %}
+
+                {# ADDFLASH MODIFICTION DE ROLE #}
+                {% for message in app.flashes('succes_user') %}
+                    <div class="bg-success text-white text-center col-md-6 mx-auto rounded p-3 mb-3">
+                        {{ message }} 
+                    </div> 
+                {% endfor %}
+
+                {# ADDFLASH SUPPRESSION D'UN UTILISATEUR #}
+                {% for message in app.flashes('succes_user_delete') %}
+                    <div class="bg-success text-white text-center col-md-6 mx-auto rounded p-3 mb-3">
+                        {{ message }} 
+                    </div> 
+                {% endfor %}
+                
+                {# Table des utilisateurs #}
+                {#  #}
+                <h5 class="text-center color-admin-grey mt-5 mb-3" id="infos">Les utilisateurs</h5>
+                <table class="table table-bordered table-resposive form">
+                    <thead>
+                        <th class="col-1">Prénom / Nom</th>
+                        <th class="col-1">Email</th>
+                        <th class="col-1">Role</th>
+                        <th class="col-1">Action</th>
+                    </thead>
+                    <tbody>
+                    {% for data in users %}
+                        <tr class="">
+                            <td class="col-1">{{ data.prenom | capitalize }} {{data.nom | upper }}</td>
+                            <td class="col-1">{{ data.email}}</td>
+                            <td class="col-1">{{ data.roles[0] == "ROLE_ADMIN" ? "Admin" : "Simple utilisateur" }}</td>
+                            <td class="col-1">
+                                <a href="{{ path('user', {id: data.id})}}#user" class="color-admin-grey col-12 text-center" title="Modifier le role {{ data.prenom |capitalize}}">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="{{ path('user_remove', {id: data.id})}}" class="color-admin-grey col-12 text-center" title="Supprimer {{ data.prenom |capitalize}}" onClick="return confirm('Etes-vous certains de vouloir supprimer {{ data.prenom | capitalize }} {{ data.nom | upper }} à la liste des utilisateurs ?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if namePath == "user" %}
+                    <div id="user">
+                        {# <h5 class="text-center color-admin-grey mt-5 mb-3" id="infos">Modifier le role de role de {{ user.prenom | capitalize }} {{ user.nom | upper }}</h5> #}
+
+                        <p class="color-admin-grey form text-center mt-5">Vous êtes sur le point de modifier le role de <span class="fw-bold text-primary">{{ user.prenom | capitalize }} {{ user.nom | upper }}</span>.<br> Il est actuellement {{ user.roles[0] == "ROLE_ADMIN" ? "administrateur, c'est à dire qu'il a accès au back office du site" : "simple utilisateur. Il n'a pas accès au back office" }}</p>
+                        <form class="form" method="post">
+                            <div class="flex justify-content-center mt-3">
+                                <select class="form-select col-2 mx-2" id="role-admin" name="role" required>
+                                    <option value="" disabled selected>Rôle</option>
+                                    <option value="ROLE_USER"{{ user.roles[0] != "ROLE_ADMIN" ? "selected" : ""}}>Utilisateur</option>
+                                    <option value="ROLE_ADMIN" {{ user.roles[0] == "ROLE_ADMIN" ? "selected" : ""}}>Admin</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-primary mx-2" onClick="return confirm('Etes-vous certains de vouloir modifier le rôle de cet utilisateur ?')">Mettre à jour </button>
+                            </div>
+                            <p class="text-center text-warning dNone text-admin-role mt-2">{{ user.prenom | capitalize }} aura accès au backOffice</p>
+                            <p class="text-center text-warning dNone text-user-role mt-2">{{ user.prenom | capitalize }} n'aura plus accès au backOffice</p>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+            {% include 'footer-admin.html.twig' %}
+        </div>
+    </div>
+    
+
+{% endblock %}

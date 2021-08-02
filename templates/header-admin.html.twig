@@ -1,0 +1,119 @@
+{# MENU DE CAUCHE #}
+{% set currentPath = app.request.requesturi %}
+{% set namePath = app.request.attributes.get('_route') %}
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        {# EO ADMIN  #}
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('admin')}}">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">EO ADMIN <sup></sup></div>
+        </a>
+
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            zones à modifier
+        </div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        {# HAUT DE LA PAGE  #}
+        <li class="nav-item {{ namePath == 'haut' or namePath == 'bg' or namePath == 'menu'? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#haut_pages"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>"Haut de la page" / "{{ menu[0].titre | capitalize }}"</span>
+            </a>
+            <div id="haut_pages" class="collapse {{ namePath == 'haut' or namePath == 'bg' or namePath == 'menu'? 'show' : '' }}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ namePath == 'haut' ? 'active' : '' }}" href="{{ path('haut') }}">Infos générales du site</a>
+                    <a class="collapse-item {{ namePath == 'bg' ? 'active' : '' }}" href="{{ path('bg') }}">Arrière plan accueil</a>
+                    <a class="collapse-item {{ namePath == 'menu' ? 'active' : '' }}" href="{{ path('menu') }}">Menu de navigation</a>
+                    
+                </div>
+            </div>
+        </li>
+
+        {# VIDEO #}
+        <li class="nav-item {{ namePath == 'videos' or namePath == 'edit_video' or namePath == 'video_new' ? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#videos-admin"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Vidéos</span>
+            </a>
+            <div id="videos-admin" class="collapse {{ namePath == 'videos' or namePath == 'video_edit' or namePath == 'video_new' ? 'show' : '' }}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ namePath == 'videos' ? 'active' : '' }}" href="{{ path('videos') }}">Toutes les vidéos</a>
+                    <a class="collapse-item {{ namePath == 'video_new' ? 'active' : '' }}" href="{{ path('video_new') }}">Ajouter une vidéo</a>
+                    {% if namePath == 'video_edit' %}
+                        <span class="collapse-item active">Modification d'une vidéo</span>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </li>
+
+
+        {# UTILISATEURS #}
+        <li class="nav-item {{ namePath == 'users' or namePath == 'user' ? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#users"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Les utilisateurs</span>
+            </a>
+
+           <div id="users" class="collapse {{ namePath == 'users' or namePath == 'user' ? 'show' : '' }}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ namePath == 'users' ? 'active' : '' }}" href="{{ path('users') }}">Tous les utilisateurs</a>
+                    {% if namePath == 'user' %}
+                        <span class="collapse-item active">Role d'un utilisateur</span>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item {% if namePath == 'media' %}active {% endif %}">
+            <a class="nav-link" href="{{ path('media') }}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>"Media"</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ namePath == 'network' or namePath == 'networks' ? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#network-admin"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Footer</span>
+            </a>
+
+           <div id="network-admin" class="collapse {{ namePath == 'footer' or namePath == 'network' or namePath == 'networks' ? 'show' : '' }}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ namePath == 'footer' ? 'active' : '' }}" href="{{ path('footer', {id: 1}) }}">Adresse</a>
+                     <a class="collapse-item {{ namePath == 'networks' ? 'active' : '' }}" href="{{ path('networks') }}">Les réseaux sociaux</a>
+                    {% if namePath == 'network' %}
+                        <span class="collapse-item active">Modification</span>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+{# FIN MENU DE CAUCHE #}
+

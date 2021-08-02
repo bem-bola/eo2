@@ -1,0 +1,35 @@
+<section id="videos-img">
+
+  {% if is_granted('ROLE_ADMIN') %}
+    <div class="flex justify-content-center m-5"> 
+      <a href="{{ path('video_new')}}" class="btn btn-primary mx-2" target="_blank">Ajouter une nouvelle vidéo</a>
+      <a href="{{ path('videos')}}" class="btn btn-info mx-2 text-white" target="_blank">Modifier une vidéo</a>
+    </div>
+  {% endif %}
+  
+  <div class="image flex fwrap w-100 p-0 mx-0">
+    {% for data in videos %}
+      <div class="image-item flex flex-column px-2 my-2">
+        <div class="flex img-item h-100 {{ loop.index % 2 == 0 ? 'justify-start' : 'justify-end'}}">
+          <img src="{{ asset('images/uploads/' ~ data.image )}}">
+        </div>
+        
+        <div class="flex content-icon-play {{ loop.index % 2 == 0 ? 'justify-start' : 'justify-end'}}">
+          <span class="play text-center"><i class="bi bi-play-fill text-center"></i></span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="video">
+    {% for data in videos %}
+    <article class="video-item bg-darks fixed-top dNone">
+      <div class="flex justify-content-end content-close-icon mx-5">
+        <span type="button" data-bs-dismiss="modal" aria-label="Close" class="text-white close-video-iframe"><i class="bi bi-x"></i></span>
+      </div>
+      <div class="video-item container-iframe">
+        <iframe src="{{ src_iframe(data.lien)['src'] }}?" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="video-iframe"></iframe>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>

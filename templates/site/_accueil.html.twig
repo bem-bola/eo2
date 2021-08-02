@@ -1,0 +1,50 @@
+
+<section id="accueil"
+    {% for data in bg %} 
+        style="background: url({{ asset('images/uploads/' ~ data.background)}}), rgba(0, 0, 0, 0.6); background-repeat: no-repeat; background-size: cover; background-blend-mode: multiply;" 
+    {% endfor %}>
+
+        
+  
+    {% for data in info %}
+
+        <a href="{{ path('site') }}" class="h1 d-none d-xs-none d-sm-none d-md-block">
+            {{ data.description1 | upper }}<br> - 
+            {{ data.description2 | upper }} & <br>
+            {{ data.description3 | upper }} -
+        </a>
+
+        <div class="dNoneBlock d-xs-block d-sm-block d-md-none flex">
+
+            <div type="button" class="bar-content fixed-top">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <div type="button" class="close text-white fixed-top dNone"><i class="bi bi-x-lg"></i></div>
+
+
+            <a class="h1 h1-rwd">
+                {{ data.description1 | upper }} - 
+                {{ data.description2 | upper }} & 
+                {{ data.description3 | upper }} -
+            </a>
+
+        </div>
+        
+    {% endfor %}
+    <div>
+
+
+    <div>
+        {% for data in info %}
+            <h1 class="">{{ data.nomDuSite | upper }}  {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('haut')}}" class="text-right text-white" target="_blank">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          {% endif %}</h1>
+            <p class="text"> {{ data.sousTitreSite }} </p>
+        {% endfor %}
+    </div>
+</section>
+

@@ -1,0 +1,22 @@
+<footer>
+    <div class="network-social-icons flex justify-content-center ">
+        {% for data in reseaux %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('network', {id: data.id})}}" class="" target="_blank" title="Modifier {{ data.reseauSocial }}"><i class="bi bi-pencil-square"></i></a>
+            {% endif %}
+            <a href="{{data.lien}}" target="_bank" class="network-social text-white">
+                {{ data.icon | raw }}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="footer-text">
+        {% for data in footer %}
+            <p class="footer-text1">{{ data.text1 | upper }}   {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('footer', {id: data.id})}}" class="text-right" target="_blank">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                {% endif %}</p>
+            <p class="grey2"<a href="#" class="grey2">{{ data.text2 }}</a></p>
+        {% endfor %}
+    </div>
+</footer>

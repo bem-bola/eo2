@@ -1,0 +1,11 @@
+<p>Bonjour {{ prenom | capitalize }} {{ nom | capitalize }} </p>
+
+<p>
+    Veuillez confirmer votre adresse e-mail en cliquant sur le lien suivant : <br><br>
+    <a href="{{ signedUrl }}">Confirmer mon Email</a>.
+    {# Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}. #}
+</p>
+
+<p>
+    Cordialement.
+</p>
